@@ -47,5 +47,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add data/gtfs
-          git commit -m "$(python -c 'from datetime import datetime; print(f\"GTFS diff update on {datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\")}\")')"
+          git commit -m "Update GTFS data" || echo "No changes to commit"
           git push
