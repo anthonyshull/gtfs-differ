@@ -15,13 +15,13 @@ def diff_gtfs_files(new: Path, old: Path) -> None:
     if added:
         added_path = DIFF_GTFS_PATH / Path(new.stem)
         added_path.mkdir(parents=True, exist_ok=True)
-        write(added, added_path / Path(f"added.{new.suffix}"))
+        write(added, added_path / Path(f"added{new.suffix}"))
     
     removed = {h: old_lines[h] for h in old_lines if h not in new_lines}
     if removed:
         removed_path = DIFF_GTFS_PATH / Path(old.stem)
         removed_path.mkdir(parents=True, exist_ok=True)
-        write(removed, DIFF_GTFS_PATH / Path(old.stem) / Path(f"removed.{old.suffix}"))
+        write(removed, DIFF_GTFS_PATH / Path(old.stem) / Path(f"removed{old.suffix}"))
 
 def diff_gtfs() -> None:
     for new_file in NEW_GTFS_PATH.iterdir():
