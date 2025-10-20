@@ -19,4 +19,4 @@ def new_gtfs() -> bool:
             return last_modified_datetime > LAST_MODIFIED_DATETIME
 
 if __name__ == "__main__":
-    maybe_continue(not new_gtfs())
+    maybe_continue(new_gtfs())
