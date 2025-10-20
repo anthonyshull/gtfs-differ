@@ -6,7 +6,7 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
 
-from helpers import parse_last_modified
+from app.helpers import parse_last_modified
 
 script_path = Path(__file__).resolve()
 project_root = script_path.parent.parent
