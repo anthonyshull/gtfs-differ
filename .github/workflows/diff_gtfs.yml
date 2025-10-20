@@ -52,9 +52,11 @@ jobs:
         run: poetry run python -m app.prepare_gtfs
 
       - name: Diff GTFS
+        if: steps.download.outputs.should_continue == 'true'
         run: poetry run python -m app.diff_gtfs
 
       - name: Commit and push
+        if: steps.download.outputs.should_continue == 'true'
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
