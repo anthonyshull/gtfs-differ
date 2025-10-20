@@ -12,7 +12,6 @@ def maybe_continue(should_continue: bool) -> None:
     if not should_continue:
         with open(environ["GITHUB_OUTPUT"], "a") as f:
             f.write("should_continue=false\n")
-        exit(78)
 
 def parse_last_modified(last_modified: str) -> datetime:
     """Parses the Last-Modified header into a datetime object."""
