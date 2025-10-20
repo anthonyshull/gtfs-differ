@@ -7,7 +7,7 @@ from zipfile import ZipFile
 
 from app.config import NEW_GTFS_PATH, OLD_GTFS_PATH, ZIP_GTFS_PATH
 
-def move_gtfs() -> None:
+def _move_gtfs() -> None:
     """Moves the contents of the old GTFS file to the old GTFS directory."""
     for item in NEW_GTFS_PATH.iterdir():
         if item.is_file():
@@ -17,11 +17,14 @@ def move_gtfs() -> None:
         if item.is_file():
             item.unlink()
 
-def unzip_gtfs() -> None:
+def _unzip_gtfs() -> None:
     """Unzips the GTFS file into the new GTFS directory."""
     with ZipFile(ZIP_GTFS_PATH, 'r') as zip_ref:
         zip_ref.extractall(NEW_GTFS_PATH)
 
+def prepare_gtfs() -> None:
+    _move_gtfs()
+    _unzip_gtfs()
+
 if __name__ == "__main__":
-    move_gtfs()
-    unzip_gtfs()
+    prepare_gtfs()
