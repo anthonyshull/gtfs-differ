@@ -3,6 +3,8 @@ name: Diff GTFS
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "1 * * * *"  # Run at 1 minute past every hour
 
 jobs:
   diff-gtfs:
