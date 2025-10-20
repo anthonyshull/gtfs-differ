@@ -1,0 +1,17 @@
+[project]
+name = "gtfs-differ"
+version = "0.0.1"
+description = "Tracks changes in a GTFS source and publishes the diff."
+authors = [
+    {name = "Anthony Shull"}
+]
+license = {text = "Free"}
+requires-python = ">=3.14"
+dependencies = [
+    "httpx (>=0.28.1,<0.29.0)",
+    "pytest (>=8.4.2,<9.0.0)"
+]
+package-mode = false
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,43 @@
+name: Run
+
+on:
+  schedule:
+    - cron: '15 * * * *' # Runs on the 15th minute of every hour
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "2.2.1"
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: New GTFS
+        run: poetry run python -m app.new_gtfs
+
+      - name: Download GTFS
+        run: poetry run python -m app.download_gtfs
+
+      - name: Prepare GTFS
+        run: poetry run python -m app.prepare_gtfs
