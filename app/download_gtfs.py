@@ -9,7 +9,6 @@ from app.helpers import maybe_continue
 
 def download_gtfs() -> int:
     """Downloads the GTFS feed from the URL and saves it to the file path."""
-
     with Client() as client:
         response = client.get(GTFS_URL)
         response.raise_for_status()

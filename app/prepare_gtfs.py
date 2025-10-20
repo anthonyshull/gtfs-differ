@@ -23,6 +23,7 @@ def _unzip_gtfs() -> None:
         zip_ref.extractall(NEW_GTFS_PATH)
 
 def prepare_gtfs() -> None:
+    """Prepares the GTFS file by moving old files and unzipping the new file."""
     _move_gtfs()
     _unzip_gtfs()
 

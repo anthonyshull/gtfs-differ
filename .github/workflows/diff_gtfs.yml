@@ -12,6 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          lfs: true
           persist-credentials: false
 
       - name: Set up Python
@@ -44,11 +45,8 @@ jobs:
       - name: Prepare GTFS
         run: poetry run python -m app.prepare_gtfs
 
-      - name: List workspace contents
-        run: ls -R $GITHUB_WORKSPACE
-      
-      - name: Show Git status
-        run: git status
+      - name: Diff GTFS
+        run: poetry run python -m app.diff_gtfs
 
       - name: Commit and push
         env:
@@ -56,8 +54,8 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add data/gtfs/new
           git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
+          git add data/gtfs/new
           git commit -m "Update GTFS data" || echo "No changes to commit"
           git push origin HEAD
 
