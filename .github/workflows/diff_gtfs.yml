@@ -39,12 +39,16 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: New GTFS
+        id: new
         run: poetry run python -m app.new_gtfs
 
       - name: Download GTFS
+        id: download
+        if: steps.new.outputs.should_continue == 'true'
         run: poetry run python -m app.download_gtfs
 
       - name: Prepare GTFS
+        if: steps.download.outputs.should_continue == 'true'
         run: poetry run python -m app.prepare_gtfs
 
       - name: Diff GTFS
