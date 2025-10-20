@@ -2,7 +2,8 @@
 Reusable helper functions for the GTFS differ application.
 """
 
-from dateutil import datetime, parser
+from datetime import datetime
+from dateutil import parser
 from os import environ
 from sys import exit
 
