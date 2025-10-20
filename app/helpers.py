@@ -2,7 +2,7 @@
 Reusable helper functions for the GTFS differ application.
 """
 
-from datetime import datetime
+from dateutil import datetime, parser
 from os import environ
 from sys import exit
 
@@ -15,4 +15,4 @@ def maybe_continue(should_continue: bool) -> None:
 
 def parse_last_modified(last_modified: str) -> datetime:
     """Parses the Last-Modified header into a datetime object."""
-    return datetime.strptime(last_modified, "%a, %d %b %Y %H:%M:%S %Z")
+    return parser.parse(last_modified)
