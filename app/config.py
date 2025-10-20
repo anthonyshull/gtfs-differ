@@ -3,6 +3,7 @@ Configuration constants for GTFS Differ.
 """
 
 from datetime import datetime
+from os import environ
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -10,6 +11,8 @@ from app.helpers import parse_last_modified
 
 script_path = Path(__file__).resolve()
 project_root = script_path.parent.parent
+
+WORKSPACE = Path(environ.get("GITHUB_WORKSPACE", project_root))
 
 GTFS_URL = "https://cdn.mbta.com/MBTA_GTFS.zip"
 GTFS_DIR_PATH = project_root / Path("data/gtfs")
