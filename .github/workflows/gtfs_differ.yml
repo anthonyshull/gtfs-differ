@@ -73,7 +73,7 @@ jobs:
       - name: Create a zip of the GTFS diff
         if: steps.diff.outputs.next == 'true'
         run: |
-          zip -r "${{ steps.version.outputs.tag }}.zip" data/gtfs/diff
+          zip -r diff.zip data/gtfs/diff
 
       - name: Commit and push
         if: steps.diff.outputs.next == 'true'
@@ -105,7 +105,7 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: "Automated Release ${{ steps.version.outputs.tag }}"
           body: "Scheduled release with processed data."
-          files: "${{ steps.version.outputs.tag }}.zip"
+          files: diff.zip
 
 
 

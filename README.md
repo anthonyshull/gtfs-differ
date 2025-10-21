@@ -2,6 +2,8 @@
 
 ![GTFS Differ](https://github.com/anthonyshull/gtfs-differ/actions/workflows/gtfs_differ.yml/badge.svg)
 
+[Download the Latest Diff](https://github.com/anthonyshull/gtfs-differ/releases/latest/download/diff.zip)
+
 This repository contains a GitHub Action that periodically publishes a diff of GTFS changes.
 
 ## Instructions
