@@ -66,7 +66,8 @@ jobs:
         id: version
         if: steps.diff.outputs.next == 'true'
         run: |
-          tag=$(cat LAST_MODIFIED | tr -d '[:space:]')
+          raw=$(cat LAST_MODIFIED | tr '[:space:]')
+          tag=$(echo "$raw" | tr -cd '[:alnum:]._-')
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Create a zip of the GTFS diff
