@@ -15,7 +15,7 @@ class DownloadGTFS(Step):
             response.raise_for_status()
 
             with open(ZIP_GTFS_PATH, "wb") as file:
-                return file.write(response.content)
+                file.write(response.content)
 
         return self
 

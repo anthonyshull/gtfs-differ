@@ -12,7 +12,7 @@ class PrepareGTFS(Step):
     def process(self) -> Self:
         """Moves the old GTFS files and unzips the new GTFS file."""
         self.__move_gtfs()
-        self._unzip_gtfs()
+        self.__unzip_gtfs()
 
         return self
 
