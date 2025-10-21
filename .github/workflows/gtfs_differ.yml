@@ -103,7 +103,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
-          name: "Automated Release ${{ steps.version.outputs.tag }}"
+          name: "${{ steps.version.outputs.tag }}"
           body: "Scheduled release with processed data."
           files: diff.zip
 
