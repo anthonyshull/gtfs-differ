@@ -6,7 +6,8 @@ class Step(ABC):
     """
     An Abstract Base Class for a step in a workflow.
     Has two functions: `process` and `success`.
-    Process returns `None` and success returns a `bool`.
+    Process returns `Self` and success returns a `bool`.
+    This allows for chaining the two together.
     """
     @abstractmethod
     def process(self) -> Self:
