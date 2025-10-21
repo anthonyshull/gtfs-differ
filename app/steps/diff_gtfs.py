@@ -12,6 +12,7 @@ class DiffGTFS(Step):
     def process(self) -> Self:
         """Processes the step."""
         DIFF_GTFS_PATH.mkdir(parents=True, exist_ok=True)
+        DIFF_GTFS_PATH / Path(".gitkeep").touch()
 
         for item in DIFF_GTFS_PATH.iterdir():
             if item.is_file():

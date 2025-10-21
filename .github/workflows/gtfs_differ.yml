@@ -73,7 +73,7 @@ jobs:
       - name: Create a zip of the GTFS diff
         if: steps.diff.outputs.next == 'true'
         run: |
-          zip -r diff.zip data/gtfs/diff/* -j
+          zip -r diff.zip data/gtfs/diff/*
 
       - name: Commit and push
         if: steps.diff.outputs.next == 'true'
