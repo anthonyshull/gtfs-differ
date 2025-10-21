@@ -9,6 +9,8 @@ on:
 jobs:
   diff-gtfs:
     runs-on: ubuntu-latest
+    env:
+      GTFS_URL: ${{ vars.GTFS_URL }}
 
     steps:
       - name: Checkout code
