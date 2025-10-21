@@ -11,4 +11,4 @@ This repository contains a GitHub Action that periodically publishes a diff of G
 You can point this process at any GTFS feed file with the following steps.
 
 1. Fork this repository.
-2. Add an *action variable* `GTFS_URL` that points to the zip file you want to process.
+2. Add an [Actions variable](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-variables) `GTFS_URL` that points to the zip file you want to process.
