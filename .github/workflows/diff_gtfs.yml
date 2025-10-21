@@ -40,23 +40,25 @@ jobs:
 
       - name: New GTFS
         id: new
-        run: poetry run python -m app.new_gtfs
+        run: poetry run python -m app.steps.new_gtfs
 
       - name: Download GTFS
         id: download
-        if: steps.new.outputs.should_continue == 'true'
-        run: poetry run python -m app.download_gtfs
+        if: steps.new.outputs.next == 'true'
+        run: poetry run python -m app.steps.download_gtfs
 
       - name: Prepare GTFS
-        if: steps.download.outputs.should_continue == 'true'
-        run: poetry run python -m app.prepare_gtfs
+        id: prepare
+        if: steps.download.outputs.next == 'true'
+        run: poetry run python -m app.steps.prepare_gtfs
 
       - name: Diff GTFS
-        if: steps.download.outputs.should_continue == 'true'
-        run: poetry run python -m app.diff_gtfs
+        id: diff
+        if: steps.prepare.outputs.next == 'true'
+        run: poetry run python -m app.steps.diff_gtfs
 
       - name: Commit and push
-        if: steps.download.outputs.should_continue == 'true'
+        if: steps.diff.outputs.next == 'true'
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |

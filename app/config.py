@@ -2,12 +2,10 @@
 Configuration constants for GTFS Differ.
 """
 
-from datetime import datetime
+from dateutil import parser
 from os import environ
 from pathlib import Path
 from urllib.parse import urlparse
-
-from app.helpers import parse_last_modified
 
 script_path = Path(__file__).resolve()
 project_root = script_path.parent.parent
@@ -23,4 +21,4 @@ OLD_GTFS_PATH = GTFS_DIR_PATH / Path("old")
 ZIP_GTFS_PATH = GTFS_DIR_PATH / Path(urlparse(GTFS_URL).path).name
 
 LAST_MODIFIED = open("LAST_MODIFIED", encoding="utf-8").read().strip()
-LAST_MODIFIED_DATETIME = parse_last_modified(LAST_MODIFIED)
+LAST_MODIFIED_DATETIME = parser.parse(LAST_MODIFIED)
