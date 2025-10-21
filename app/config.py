@@ -21,5 +21,5 @@ NEW_GTFS_PATH = GTFS_DIR_PATH / Path("new")
 OLD_GTFS_PATH = GTFS_DIR_PATH / Path("old")
 ZIP_GTFS_PATH = GTFS_DIR_PATH / Path(urlparse(GTFS_URL).path).name
 
-LAST_MODIFIED = open("LAST_MODIFIED", encoding="utf-8").read().strip()
-LAST_MODIFIED_DATETIME = parser.parse(LAST_MODIFIED)
+LAST_MODIFIED_PATH = WORKSPACE / Path("LAST_MODIFIED")
+LAST_MODIFIED = open(LAST_MODIFIED_PATH, encoding="utf-8").read().strip()

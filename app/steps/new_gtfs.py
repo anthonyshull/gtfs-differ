@@ -3,7 +3,7 @@ from typing import Self
 
 from httpx import Client
 
-from app.config import GTFS_URL, LAST_MODIFIED_DATETIME
+from app.config import GTFS_URL, LAST_MODIFIED, LAST_MODIFIED_PATH
 from app.step import Step
 
 class NewGTFS(Step):
@@ -11,21 +11,19 @@ class NewGTFS(Step):
     Checks the last modified time of a GTFS feed file.
     """
     def process(self) -> Self:
-        """There is no processing step"""
+        """Get the Last-Modified header from the GTFS URL and store it."""
+        with Client() as client:
+            response = client.head(GTFS_URL)
+            self.__last_modified = response.headers.get("Last-Modified")
+
+            open(LAST_MODIFIED_PATH, "w").write(self.__last_modified)
+
         return self
 
     def success(self) -> bool:
         """Returns True if the remote file has been modified since the last check."""
-        with Client() as client:
-            response = client.head(GTFS_URL)
-            last_modified = response.headers.get("Last-Modified")
-
-            if last_modified:
-                last_modified_datetime = parser.parse(last_modified)
-
-                print(f"Last-Modified: {last_modified_datetime.isoformat()}")
-
-                return last_modified_datetime > LAST_MODIFIED_DATETIME
+        if self.__last_modified:
+            return parser.parse(self.__last_modified) > parser.parse(LAST_MODIFIED)
 
 if __name__ == "__main__":
     NewGTFS().process().next()
