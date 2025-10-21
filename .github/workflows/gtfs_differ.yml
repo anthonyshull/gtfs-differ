@@ -66,14 +66,14 @@ jobs:
         id: version
         if: steps.diff.outputs.next == 'true'
         run: |
-          raw=$(cat LAST_MODIFIED)
+          raw=$(cat LAST_MODIFIED | tr '[:lower:]' '[:upper:]')
           tag=$(echo "$raw" | tr -cd '[:alnum:]._-')
           echo "tag=$tag" >> $GITHUB_OUTPUT
 
       - name: Create a zip of the GTFS diff
         if: steps.diff.outputs.next == 'true'
         run: |
-          zip -r diff.zip data/gtfs/diff
+          zip -r diff.zip data/gtfs/diff/* -j
 
       - name: Commit and push
         if: steps.diff.outputs.next == 'true'
