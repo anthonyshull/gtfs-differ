@@ -59,15 +59,47 @@ jobs:
         if: steps.prepare.outputs.next == 'true'
         run: poetry run python -m app.steps.diff_gtfs
 
+      - name: Read LAST_MODIFIED and set tag
+        id: version
+        if: steps.diff.outputs.next == 'true'
+        run: |
+          tag=$(cat LAST_MODIFIED | tr -d '[:space:]')
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+
+      - name: Create a zip of the GTFS diff
+        if: steps.diff.outputs.next == 'true'
+        run: |
+          zip -r "${{ steps.version.outputs.tag }}.zip" data/gtfs/diff
+
       - name: Commit and push
         if: steps.diff.outputs.next == 'true'
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
           git add data/gtfs
-          git commit -m "Update GTFS data" || echo "No changes to commit"
-          git push origin HEAD
+          git commit -m "Last modified: ${{ steps.version.outputs.tag }}" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref }}
+
+      - name: Create Git tag
+        if: steps.diff.outputs.next == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
+
+      - name: Create GitHub Release
+        if: steps.diff.outputs.next == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: "Automated Release ${{ steps.version.outputs.tag }}"
+          body: "Scheduled release with processed data."
+          files: "${{ steps.version.outputs.tag }}.zip"
+
+
 
