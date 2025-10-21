@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from os import environ
+from typing import Self
 
 class Step(ABC):
     """
     An Abstract Base Class for a step in a workflow.
-    Has two functions: `process` and `check`.
-    Process returns `None` and check returns a `bool`.
+    Has two functions: `process` and `success`.
+    Process returns `None` and success returns a `bool`.
     """
     @abstractmethod
-    def process(self) -> None:
+    def process(self) -> Self:
         """Processes the step."""
         pass
 

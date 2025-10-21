@@ -1,4 +1,5 @@
 from dateutil import parser
+from typing import Self
 
 from httpx import Client
 
@@ -9,9 +10,9 @@ class NewGTFS(Step):
     """
     Checks the last modified time of a GTFS feed file.
     """
-    def process(self) -> None:
+    def process(self) -> Self:
         """There is no processing step"""
-        pass
+        return self
 
     def success(self) -> bool:
         """Returns True if the remote file has been modified since the last check."""
@@ -27,5 +28,4 @@ class NewGTFS(Step):
                 return last_modified_datetime > LAST_MODIFIED_DATETIME
 
 if __name__ == "__main__":
-    step = NewGTFS()
-    step.next()
+    NewGTFS().process().next()

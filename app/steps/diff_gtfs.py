@@ -1,5 +1,6 @@
 from hashlib import sha256
 from pathlib import Path
+from typing import Self
 
 from app.config import DIFF_GTFS_PATH, NEW_GTFS_PATH, OLD_GTFS_PATH
 from app.step import Step
@@ -8,7 +9,7 @@ class DiffGTFS(Step):
     """
     Creates a diff between the old and new GTFS feed files.
     """
-    def process(self) -> None:
+    def process(self) -> Self:
         """Processes the step."""
         for item in DIFF_GTFS_PATH.iterdir():
             if item.is_file():
@@ -18,6 +19,8 @@ class DiffGTFS(Step):
             old_file = OLD_GTFS_PATH / new_file.name
             if old_file.exists():
                 self._diff_gtfs_files(new_file, old_file)
+
+        return self
 
     def success(self) -> bool:
         """Checks that the diff files have been created."""
@@ -54,6 +57,4 @@ class DiffGTFS(Step):
                 f.write(f"{line}\n")
 
 if __name__ == "__main__":
-    step = DiffGTFS()
-    step.process()
-    step.next()
+    DiffGTFS().process().next()

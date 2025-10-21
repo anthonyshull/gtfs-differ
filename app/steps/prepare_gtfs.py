@@ -1,4 +1,5 @@
 from shutil import copy2
+from typing import Self
 from zipfile import ZipFile
 
 from app.config import NEW_GTFS_PATH, OLD_GTFS_PATH, ZIP_GTFS_PATH
@@ -8,10 +9,12 @@ class PrepareGTFS(Step):
     """
     Prepares the GTFS file by moving old files and unzipping the new file.
     """
-    def process(self) -> None:
+    def process(self) -> Self:
         """Moves the old GTFS files and unzips the new GTFS file."""
         self._move_gtfs()
         self._unzip_gtfs()
+
+        return self
 
     def success(self) -> bool:
         """Checks that new files have been placed in the new GTFS directory."""
@@ -33,6 +36,4 @@ class PrepareGTFS(Step):
             zip_ref.extractall(NEW_GTFS_PATH)
 
 if __name__ == "__main__":
-    step = PrepareGTFS()
-    step.process()
-    step.next()
+    PrepareGTFS().process().next()
