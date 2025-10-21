@@ -12,11 +12,12 @@ class DiffGTFS(Step):
     def process(self) -> Self:
         """Processes the step."""
         DIFF_GTFS_PATH.mkdir(parents=True, exist_ok=True)
-        (DIFF_GTFS_PATH / Path(".gitkeep")).touch()
 
         for item in DIFF_GTFS_PATH.iterdir():
             if item.is_file():
                 item.unlink()
+
+        (DIFF_GTFS_PATH / Path(".gitkeep")).touch()
 
         for new_file in NEW_GTFS_PATH.iterdir():
             old_file = OLD_GTFS_PATH / new_file.name
