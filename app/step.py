@@ -5,7 +5,7 @@ from typing import Self
 class Step(ABC):
     """
     An Abstract Base Class for a step in a workflow.
-    Has two functions: `process` and `success`.
+    Has two abstract methods: `process` and `success`.
     Process returns `Self` and success returns a `bool`.
     This allows for chaining the two together.
     """
