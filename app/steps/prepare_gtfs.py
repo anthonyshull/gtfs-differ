@@ -1,3 +1,4 @@
+from pathlib import Path
 from shutil import copy2
 from typing import Self
 from zipfile import ZipFile
@@ -29,6 +30,8 @@ class PrepareGTFS(Step):
         for item in NEW_GTFS_PATH.iterdir():
             if item.is_file():
                 item.unlink()
+
+        (OLD_GTFS_PATH / Path(".gitkeep")).touch()
 
     def __unzip_gtfs(self) -> None:
         """Unzips the GTFS file into the new GTFS directory."""
