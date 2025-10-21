@@ -11,7 +11,7 @@ class PrepareGTFS(Step):
     """
     def process(self) -> Self:
         """Moves the old GTFS files and unzips the new GTFS file."""
-        self._move_gtfs()
+        self.__move_gtfs()
         self._unzip_gtfs()
 
         return self
@@ -20,7 +20,7 @@ class PrepareGTFS(Step):
         """Checks that new files have been placed in the new GTFS directory."""
         return any(NEW_GTFS_PATH.iterdir())
 
-    def _move_gtfs(self) -> None:
+    def __move_gtfs(self) -> None:
         """Moves the contents of the old GTFS file to the old GTFS directory."""
         for item in NEW_GTFS_PATH.iterdir():
             if item.is_file():
@@ -30,7 +30,7 @@ class PrepareGTFS(Step):
             if item.is_file():
                 item.unlink()
 
-    def _unzip_gtfs(self) -> None:
+    def __unzip_gtfs(self) -> None:
         """Unzips the GTFS file into the new GTFS directory."""
         with ZipFile(ZIP_GTFS_PATH, 'r') as zip_ref:
             zip_ref.extractall(NEW_GTFS_PATH)

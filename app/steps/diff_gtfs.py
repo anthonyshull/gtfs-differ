@@ -18,7 +18,7 @@ class DiffGTFS(Step):
         for new_file in NEW_GTFS_PATH.iterdir():
             old_file = OLD_GTFS_PATH / new_file.name
             if old_file.exists():
-                self._diff_gtfs_files(new_file, old_file)
+                self.__diff_gtfs_files(new_file, old_file)
 
         return self
 
@@ -26,32 +26,32 @@ class DiffGTFS(Step):
         """Checks that the diff files have been created."""
         return any(DIFF_GTFS_PATH.iterdir())
 
-    def _diff_gtfs_files(self, new: Path, old: Path) -> None:
-        new_lines = self._hash_lines(new)
-        old_lines = self._hash_lines(old)
+    def __diff_gtfs_files(self, new: Path, old: Path) -> None:
+        new_lines = self.__hash_lines(new)
+        old_lines = self.__hash_lines(old)
 
         added = {h: new_lines[h] for h in new_lines if h not in old_lines}
         if added:
             added_path = DIFF_GTFS_PATH / Path(new.stem)
             added_path.mkdir(parents=True, exist_ok=True)
-            self._write(added, added_path / Path(f"added{new.suffix}"))
+            self.__write(added, added_path / Path(f"added{new.suffix}"))
         
         removed = {h: old_lines[h] for h in old_lines if h not in new_lines}
         if removed:
             removed_path = DIFF_GTFS_PATH / Path(old.stem)
             removed_path.mkdir(parents=True, exist_ok=True)
-            self._write(removed, DIFF_GTFS_PATH / Path(old.stem) / Path(f"removed{old.suffix}"))
+            self.__write(removed, DIFF_GTFS_PATH / Path(old.stem) / Path(f"removed{old.suffix}"))
 
-    def _hash_line(self, line: str) -> str:
+    def __hash_line(self, line: str) -> str:
         return sha256(line.encode("utf-8")).hexdigest()
 
-    def _hash_lines(self, path: Path) -> dict[str, str]:
+    def __hash_lines(self, path: Path) -> dict[str, str]:
         with path.open("r", encoding="utf-8") as f:
             lines = f.readlines()[1:]
 
-            return {self._hash_line(line.strip()): line.strip() for line in lines if line.strip()}
+            return {self.__hash_line(line.strip()): line.strip() for line in lines if line.strip()}
 
-    def _write(self, lines: dict[str, str], path: Path) -> None:
+    def __write(self, lines: dict[str, str], path: Path) -> None:
         with path.open("w", encoding="utf-8") as f:
             for line in lines.values():
                 f.write(f"{line}\n")
