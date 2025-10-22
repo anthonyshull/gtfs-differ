@@ -31,6 +31,8 @@ class DiffGTFS(Step):
         return any(DIFF_GTFS_PATH.iterdir())
 
     def __diff_gtfs_files(self, new: Path, old: Path) -> None:
+        header = new.open("r", encoding="utf-8").readline().strip()
+
         new_lines = self.__hash_lines(new)
         old_lines = self.__hash_lines(old)
 
@@ -38,13 +40,13 @@ class DiffGTFS(Step):
         if added:
             added_path = DIFF_GTFS_PATH / Path(new.stem)
             added_path.mkdir(parents=True, exist_ok=True)
-            self.__write(added, added_path / Path(f"added{new.suffix}"))
+            self.__write(header, added, added_path / Path(f"added{new.suffix}"))
         
         removed = {h: old_lines[h] for h in old_lines if h not in new_lines}
         if removed:
             removed_path = DIFF_GTFS_PATH / Path(old.stem)
             removed_path.mkdir(parents=True, exist_ok=True)
-            self.__write(removed, DIFF_GTFS_PATH / Path(old.stem) / Path(f"removed{old.suffix}"))
+            self.__write(header, removed, removed_path / Path(f"removed{old.suffix}"))
 
     def __hash_line(self, line: str) -> str:
         return sha256(line.encode("utf-8")).hexdigest()
@@ -55,8 +57,9 @@ class DiffGTFS(Step):
 
             return {self.__hash_line(line.strip()): line.strip() for line in lines if line.strip()}
 
-    def __write(self, lines: dict[str, str], path: Path) -> None:
+    def __write(self, header: str, lines: dict[str, str], path: Path) -> None:
         with path.open("w", encoding="utf-8") as f:
+            f.write(f"{header}\n")
             for line in lines.values():
                 f.write(f"{line}\n")
 
