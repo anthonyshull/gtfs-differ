@@ -1,0 +1,17 @@
+{
+	"name": "new gtfs",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2025-10-31T22:01:00",
+				"timeZone": "Central Standard Time"
+			}
+		}
+	}
+}
